@@ -62,6 +62,9 @@ def resolve_file(fname):
             return cand
     return None
 
+def output_to_file(bottom_of_range, top_of_range):
+    with open('output/out.txt', 'w') as f:
+	print >> f, bottom_of_range, top_of_range 
 
 def classify_many_single_crop(sess, label_list, softmax_output, coder, images, image_files, writer):
     try:
@@ -81,6 +84,7 @@ def classify_many_single_crop(sess, label_list, softmax_output, coder, images, i
                 best_i = np.argmax(output_i)
                 best_choice = (label_list[best_i], output_i[best_i])
                 print('Guess @ 1 %s, prob = %.2f' % best_choice)
+                output_to_file(label_list[best_i], output_i[best_i])
                 if writer is not None:
                     f = batch_image_files[i]
                     writer.writerow((f, best_choice[0], '%.2f' % best_choice[1]))
